@@ -35,3 +35,22 @@ print linreg2.summary()
 plt.figure(figsize=(25,15))
 plt.plot(df.sort_values('sold').sold, df.sort_values('sold').sale_price)
 plt.show()
+
+format = lambda x: x.year
+df.sold_year = df.sold.map(format)
+df['sold_year'] = pd.Series(df.sold_year, index=df.index)
+
+format2 = lambda x: x.month
+df.sold_month = df.sold.map(format2)
+df['sold_month'] = pd.Series(df.sold_month, index=df.index)
+
+model_y_m = smf.ols(formula='sale_price ~ district + bedroom + bath + parking + sqft + home_own_ass + day_on_market + list_price + single_f_h + condo + dist_no + sold_year + sold_month', data=df)
+linreg3 = model_y_m.fit()
+print linreg3.summary()
+
+df_address = df.set_index(['address'])
+df_sold = df.sort_values('sold')
+df_sold = df_sold.set_index('sold')
+
+plt.plot(df_sold.sale_price)
+plt.show()
