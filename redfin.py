@@ -11,3 +11,8 @@ import pdb
 from datetime import datetime as dt
 from dateutil.relativedelta import relativedelta
 import os
+
+req = requests.get('http://www.zillow.com/homes/recently_sold/size_sort/')
+html = BeautifulSoup(req.content, 'html.parser')
+
+html.find_all('a', attrs ={'href' : '/homedetails/'})
