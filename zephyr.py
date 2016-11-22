@@ -40,9 +40,11 @@ plt.figure(figsize=(25,15))
 plt.plot(df.sort_values('sold').sold, df.sort_values('sold').sale_price)
 plt.show()
 
+'''
 plt.figure(figsize=(25,15))
 plt.plot(df.sort_values(['sold', 'dist_no']).sold, df.sort_values(['sold', 'dist_no']).sale_price)
 plt.show()
+'''
 
 format = lambda x: x.year
 df.sold_year = df.sold.map(format)
@@ -76,7 +78,7 @@ plt.plot(df_sold[['sale_price']], color = 'red')
 plt.show()
 
 plt.figure(figsize=(25,15))
-plt.scatter(df_sold.index, (np.log10(df_sold.sale_price)))
+plt.scatter(df_sold.index, np.log10(df_sold.sale_price))
 plt.show()
 
 print 'listed for > $5M:', df_sold.list_price[df_sold.list_price > 5000000].count()
@@ -90,9 +92,24 @@ plt.figure(figsize=(25,15))
 df_sold.list_price.plot()
 plt.show()
 
-# Cross-validation
-y_sold = df_sold.pop('sale_price')
+# Cross-validationc
+df_district = pd.get_dummies(df_sold.district)
+df_sold_dum = pd.concat( [df_sold, df_district], axis=1)
+df_sold_dum.pop('district')
+
+df_sin_month = pd.Series(np.sin(2*np.pi*(df_sold_dum.sold_month)/float(12)))
+df_cos_month = pd.Series(np.cos(2*np.pi*(df_sold_dum.sold_month)/float(12)))
+df_sold_dum['sin_month'] = pd.Series(df_sin_month, index=df_sold_dum.index)
+df_sold_dum['cos_month'] = pd.Series(df_cos_month, index=df_sold_dum.index)
+
+df_sold_dum.pop('sold_month')
+df_sold_dum.pop('address')
+
+y_sold = df_sold_dum.pop('sale_price')
+X_sold = df_sold_dum
+'''
 X_sold = df_sold[['district','bedroom','bath','parking','sqft','home_own_ass','day_on_market','list_price','single_f_h','condo','dist_no','sold_year','sold_month']]
+'''
 
 X_train, X_test, y_train, y_test = train_test_split(X_sold, y_sold, test_size=0.4, random_state=0)
 
@@ -101,8 +118,10 @@ X_test.shape
 y_train.shape
 y_test.shape
 
+'''
 X_train.pop('district')
 X_test.pop('district')
+'''
 
 lr1 = linear_model.LinearRegression()
 lr1.fit(X_train, y_train)
@@ -110,8 +129,7 @@ lr1.fit(X_train, y_train)
 # The coefficients
 print('Coefficients: \n', lr1.coef_)
 # The mean squared error
-print("Mean squared error: %.2f"
-      % np.mean((lr1.predict(X_test) - y_test) ** 2))
+
 # Explained variance score: 1 is perfect prediction
 print('Variance score: %.2f' % lr1.score(X_test, y_test))
 '''
@@ -125,12 +143,7 @@ plt.show()
 predicted = cross_val_predict(lr1, X_train, y_train, cv=10)
 #print('metrics accuracy_score: ', metrics.accuracy_score(y_train, predicted))
 
-fig, ax = plt.subplots(figsize=(25,15))
-ax.scatter(y_train, predicted)
-ax.plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()], 'k--', lw=4)
-ax.set_xlabel('Measured')
-ax.set_ylabel('Predicted')
-plt.show()
+
 
 '''
 clf = SVC(kernel='linear', C=1).fit(X_train, y_train)
