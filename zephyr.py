@@ -12,7 +12,8 @@ from sklearn.model_selection import cross_val_predict, cross_val_score, train_te
 from sklearn import linear_model, svm, metrics
 from sklearn.svm import SVC
 from sklearn.pipeline import make_pipeline
-
+from sklearn.feature_selection import f_regression, chi2
+import seaborn as sns
 
 df =pd.read_excel('zephyr.xlsx')
 print df.columns
@@ -142,7 +143,30 @@ plt.show()
 '''
 predicted = cross_val_predict(lr1, X_train, y_train, cv=10)
 #print('metrics accuracy_score: ', metrics.accuracy_score(y_train, predicted))
+#####
 
+fig, ax = plt.subplots(figsize=(25,15))
+ax.scatter(y_train, predicted)
+ax.plot([y_train.min(), y_train.max()], [y_train.min(), y_train.max()], 'k--', lw=4)
+ax.set_xlabel('Measured')
+ax.set_ylabel('Predicted')
+plt.show()
+
+model_dum = smf.ols(formula='sale_price ~ district + bedroom + bath + parking + sqft + home_own_ass + day_on_market + list_price + single_f_h + condo + dist_no + sold_year + sold_month', data=df)
+linreg3 = model_y_m.fit()
+print linreg3.summary()
+#####
+
+f, pval = f_regression(X_train, y_train, center=True)
+print 'F: ', f
+print 'p-values: ', pval
+
+X_train.drop(['sin_month', 'cos_month'])
+scores, pvalues = chi2(X_train, y_train)
+print 'scores: ', scores
+print 'p-values: ', pvalues
+pvalues=["{0:.4f}".format(x)for x in pvalues]
+print pvalues
 
 
 '''
