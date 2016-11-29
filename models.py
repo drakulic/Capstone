@@ -15,7 +15,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.feature_selection import f_regression, chi2
 import seaborn as sns
 
-df =pd.read_excel('zephyr.xlsx')
+df =pd.read_excel('zephyr_no_outl.xlsx')
 
 sold_dt = pd.to_datetime(df.sold, infer_datetime_format=True)
 df.sold = sold_dt
@@ -93,41 +93,57 @@ Rainbow test for linearity
 
 sm.stats.linear_rainbow(regressor)
 
-ax = df_sold_dum[['bedroom']].hist(bins = 25)
+ax = df_sold_dum[['bedroom']].hist(bins = 25, figsize=(25,15))
 plt.show()
-ax = df_sold_dum[['bath']].hist(bins =12)
+
+ax = df_sold_dum[['bath']].hist(bins =12, figsize=(25,15))
 plt.show()
-ax = df_sold_dum[['sqft']].hist(bins =150)
+
+ax = df_sold_dum[['sqft']].hist(bins =150, figsize=(25,15))
 plt.xlim(0, 10000)
 plt.show()
 
-ax = df_sold_dum[['sqft']].hist(bins =150)
+ax = df_sold_dum[['sqft']].hist(bins =150, figsize=(25,15))
 plt.xlim(0, 6000)
 plt.show()
-plt.bar([7, 8, 10],df_sold_dum.groupby('dist_no').count()['bedroom'])
+
+fig, ax = plt.subplots(figsize=(25,15))
+ax.bar([7, 8, 10],df_sold_dum.groupby('dist_no').count()['bedroom'])
 plt.show()
-plt.boxplot(df_sold_dum.list_price)
+
+fig, ax = plt.subplots(figsize=(25,15))
+ax.boxplot(df_sold_dum.list_price)
 plt.ylim(0, 5000000)
 plt.show()
 
-plt.boxplot(df_sold_dum[df_sold_dum.sold_year == 2013].list_price)
+fig, ax = plt.subplots(figsize=(25,15))
+ax.boxplot(df_sold_dum[df_sold_dum.sold_year == 2013].list_price)
 plt.ylim(0, 2000000)
 plt.show()
-plt.boxplot(df_sold_dum[df_sold_dum.sold_year == 2014].list_price)
+
+fig, ax = plt.subplots(figsize=(25,15))
+ax.boxplot(df_sold_dum[df_sold_dum.sold_year == 2014].list_price)
 plt.ylim(0, 2000000)
 plt.show()
-plt.boxplot(df_sold_dum[df_sold_dum.sold_year == 2015].list_price)
+
+fig, ax = plt.subplots(figsize=(25,15))
+ax.boxplot(df_sold_dum[df_sold_dum.sold_year == 2015].list_price)
 plt.ylim(0, 2000000)
 plt.show()
-plt.boxplot(df_sold_dum[df_sold_dum.sold_year == 2016].list_price)
+
+fig, ax = plt.subplots(figsize=(25,15))
+ax.boxplot(df_sold_dum[df_sold_dum.sold_year == 2016].list_price)
 plt.ylim(0, 2000000)
 plt.show()
 
 every_year = [df[df.sold_year == 2013].sale_price, df[df.sold_year == 2014].sale_price, df[df.sold_year == 2015].sale_price, df[df.sold_year == 2016].sale_price]
-plt.boxplot(every_year, positions = [2013, 2014, 2015, 2016])
+
+fig, ax = plt.subplots(figsize=(25,15))
+ax.boxplot(every_year, positions = [2013, 2014, 2015, 2016])
 plt.ylim(0, 2000000)
 plt.show()
 
+plt.figure(figsize=(25,15))
 sns.boxplot(data=df_sold[['list_price', 'sale_price']])
 plt.ylim(0, 2000000)
 plt.show()

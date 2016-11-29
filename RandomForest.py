@@ -1,6 +1,8 @@
 from DecisionTree import DecisionTree
 import numpy as np
 from collections import Counter
+from sklearn.cross_validation import train_test_split
+import pandas as pd
 
 
 class RandomForest(object):
@@ -93,16 +95,4 @@ class RandomForest(object):
         return sum(self.predict(X) == y) / float(len(y))
 
 if __name__ == '__main__':
-    from sklearn.cross_validation import train_test_split
-    import pandas as pd
-    #path = None
-    #if path is None:
-    #    raise ValueError('You must specify the path to the data.')
-    #df = pd.read_csv(path+'congressional_voting.csv', names=['Party']+range(1, 17))
-    #y = df.pop('Party').values
-    #X = df.values
-    #X_train, X_test, y_train, y_test = train_test_split(X, y)
-
-    rf = RandomForest(num_trees=100, num_features=35)
-    rf.fit(X_train, y_train)
-    print "Random Forest score:", rf.score(X_test, y_test)
+    pass
