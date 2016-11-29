@@ -93,66 +93,127 @@ Rainbow test for linearity
 
 sm.stats.linear_rainbow(regressor)
 
-ax = df_sold_dum[['bedroom']].hist(bins = 25, figsize=(25,15))
+'''
+fig, ax = plt.subplots(figsize=(25,15))
+fig.suptitle('Final model without list price, GradientBoostingRegressor', fontsize=20)
+ax.scatter(test_y, test_ypred_b)
+ax.plot([test_y.min(), test_y.max()], [test_y.min(), test_y.max()], 'k--', lw=4)
+ax.set_xlabel('GB log10 test set Measured', fontsize=20)
+ax.set_ylabel('GB log10 test set Predicted', fontsize=20)
 plt.show()
+fig.savefig('final_GB.png')
+'''
+
+
+
+ax = df_sold_dum[['bedroom']].hist(bins = 25, figsize=(25,15))
+plt.xlabel('Number of bedrooms', fontsize=20)
+plt.ylabel('Histogram', fontsize=20)
+plt.show()
+#plt.savefig('Bedrooms_Histogram.png')
 
 ax = df_sold_dum[['bath']].hist(bins =12, figsize=(25,15))
+plt.xlabel('Number of bathrooms', fontsize=20)
+plt.ylabel('Histogram', fontsize=20)
 plt.show()
+#ax.savefig('Bathrooms_Histogram.png')
 
 ax = df_sold_dum[['sqft']].hist(bins =150, figsize=(25,15))
+plt.xlabel('Square-Foot of property', fontsize=20)
+plt.ylabel('Histogram', fontsize=20)
 plt.xlim(0, 10000)
 plt.show()
+#ax.savefig('Sqft_Histogram_10000.png')
 
 ax = df_sold_dum[['sqft']].hist(bins =150, figsize=(25,15))
+plt.xlabel('Square-Foot of property', fontsize=20)
+plt.ylabel('Histogram', fontsize=20)
 plt.xlim(0, 6000)
 plt.show()
+#ax.savefig('sqft_6000.png')
 
 fig, ax = plt.subplots(figsize=(25,15))
 ax.bar([7, 8, 10],df_sold_dum.groupby('dist_no').count()['bedroom'])
+plt.xlabel('Sold properties by Districts', fontsize=20)
+plt.ylabel('Histogram', fontsize=20)
 plt.show()
+fig.savefig('Districts_Histogram.png')
 
 fig, ax = plt.subplots(figsize=(25,15))
-ax.boxplot(df_sold_dum.list_price)
-plt.ylim(0, 5000000)
+ax.boxplot(df_sold.list_price)
+plt.xlabel('List Price', fontsize=20)
+plt.ylim(0, 3000000)
 plt.show()
+fig.savefig('List_box.png')
 
+fig, ax = plt.subplots(figsize=(25,15))
+ax.boxplot(df_sold.sale_price)
+plt.xlabel('Sale Price', fontsize=20)
+plt.ylim(0, 3000000)
+plt.show()
+fig.savefig('Sale_box.png')
+'''
 fig, ax = plt.subplots(figsize=(25,15))
 ax.boxplot(df_sold_dum[df_sold_dum.sold_year == 2013].list_price)
-plt.ylim(0, 2000000)
+plt.xlabel('2013 List Price', fontsize=20)
+plt.ylim(0, 1500000)
 plt.show()
 
 fig, ax = plt.subplots(figsize=(25,15))
 ax.boxplot(df_sold_dum[df_sold_dum.sold_year == 2014].list_price)
-plt.ylim(0, 2000000)
+plt.xlabel('2014 List Price', fontsize=20)
+plt.ylim(0, 1500000)
 plt.show()
 
 fig, ax = plt.subplots(figsize=(25,15))
 ax.boxplot(df_sold_dum[df_sold_dum.sold_year == 2015].list_price)
-plt.ylim(0, 2000000)
+plt.xlabel('2015 List Price', fontsize=20)
+plt.ylim(0, 1500000)
 plt.show()
 
 fig, ax = plt.subplots(figsize=(25,15))
 ax.boxplot(df_sold_dum[df_sold_dum.sold_year == 2016].list_price)
-plt.ylim(0, 2000000)
+plt.xlabel('2016 List Price', fontsize=20)
+plt.ylim(0, 1550000)
 plt.show()
+'''
 
 every_year = [df[df.sold_year == 2013].sale_price, df[df.sold_year == 2014].sale_price, df[df.sold_year == 2015].sale_price, df[df.sold_year == 2016].sale_price]
 
+every_list = [df[df.sold_year == 2013].list_price, df[df.sold_year == 2014].list_price, df[df.sold_year == 2015].list_price, df[df.sold_year == 2016].list_price]
+
 fig, ax = plt.subplots(figsize=(25,15))
+fig.suptitle('Sale price by year', fontsize=20)
 ax.boxplot(every_year, positions = [2013, 2014, 2015, 2016])
 plt.ylim(0, 2000000)
 plt.show()
+fig.savefig('Sale_per_year.png')
+
+fig, ax = plt.subplots(figsize=(25,15))
+fig.suptitle('List price by year', fontsize=20)
+ax.boxplot(every_list, positions = [2013, 2014, 2015, 2016])
+plt.ylim(0, 2000000)
+plt.show()
+fig.savefig('List_per_year.png')
 
 plt.figure(figsize=(25,15))
 sns.boxplot(data=df_sold[['list_price', 'sale_price']])
 plt.ylim(0, 2000000)
 plt.show()
+fig.savefig('List_sns.png')
 
 plt.figure(figsize=(25,15))
-sns.boxplot(data = every_year)
+ax =sns.boxplot(data = every_year)
+ax.set_title('Sale every year')
 plt.ylim(0, 2000000)
 plt.show()
-
+fig.savefig('Sale_sns.png')
+'''
+ax = plt.axes()
+sns.boxplot(data = every_year, ax = ax)
+ax.set_title('Sale every year')
+plt.show()
+'''
 '''
 df_sold.columns
 u'address', u'district', u'bedroom', u'bath', u'parking', u'sqft', u'dollar_sqft', u'home_own_ass', u'day_on_market', u'list_price', u'sale_price', u'sale_to_list_ratio', u'single_f_h', u'condo', u'dist_no', u'sold_year', u'sold_month'
@@ -186,14 +247,14 @@ print'Coefficients: \n', lr_list_p.coef_
 print('Variance score: %.2f' % lr_list_p.score(X_sold, y_sold))
 
 predicted = cross_val_predict(lr_list_p, X_sold, y_sold, cv=10)
-
+'''
 fig, ax = plt.subplots(figsize=(25,15))
 ax.scatter(y_sold, predicted)
 ax.plot([y_sold.min(), y_sold.max()], [y_sold.min(), y_sold.max()], 'k--', lw=4)
 ax.set_xlabel('Measured')
 ax.set_ylabel('Predicted')
 plt.show()
-
+'''
 y_sold = np.log10(y_sold)
 
 lr_list_2 = linear_model.LinearRegression()
@@ -206,10 +267,11 @@ print'Coefficients: \n', lr_list_2.coef_
 print('Variance score: %.2f' % lr_list_2.score(X_sold, y_sold))
 
 predicted = cross_val_predict(lr_list_2, X_sold, y_sold, cv=10)
-
+'''
 fig, ax = plt.subplots(figsize=(25,15))
 ax.scatter(y_sold, predicted)
 ax.plot([y_sold.min(), y_sold.max()], [y_sold.min(), y_sold.max()], 'k--', lw=4)
 ax.set_xlabel('Measured')
 ax.set_ylabel('Predicted')
 plt.show()
+'''
