@@ -294,6 +294,7 @@ for i in xrange(30):
     print df_sold.index[4000+i].date(), '    ', df_sold.sale_price[4000+i], '    ', np.around(np.power(10, linreg3.fittedvalues[4000+i]), decimals = 2), '     ', np.around(np.power(10, linreg4.fittedvalues[4000+i]), decimals = 2), '    ',np.around(np.power(10,linreg3.fittedvalues[4000+i])-np.power(10,linreg4.fittedvalues[4000+i]), decimals = 2)
 
 
+
 #print 'Date        Predicted w/o list price     S-P error'
 #print np.power(10, linreg4.fittedvalues[4000:4031])
 
@@ -759,3 +760,25 @@ ax.set_xlabel('GB log10 test set Measured', fontsize=20)
 ax.set_ylabel('GB log10 test set Predicted', fontsize=20)
 plt.show()
 fig.savefig('final_GB.png')
+
+
+#################
+sale_avg = np.df_sold.sale_price.mean()
+with_list_avg = np.around(np.power(10, linreg3.fittedvalues), decimals = 2).mean()
+without_list_avg = np.around(np.power(10, linreg4.fittedvalues), decimals = 2).mean()
+s_w = sale_avg - with_list_avg
+s_wo = sale_avg - without_list_avg
+gb_s_avg = np.power(10, test_y).mean()
+gb_pred_avg = np.power(10, test_ypred_b).round(2).mean()
+
+print
+print 'sale price avg: ', sale_avg
+print '\nwith list price avg: ', with_list_avg
+print '\ndiff: ', s_w
+print
+print 'without list price avg: ', without_list_avg
+print '\ndiff: ', s_wo
+print
+print 'sale price avg for GB test', gb_s_avg
+print '\nGB predicted avg: ', gb_pred_avg
+print '\ndiff: ', gb_s_avg - gb_pred_avg
